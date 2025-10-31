@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Form</title>
+
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #8e44ad, #c0392b);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background: #fff;
+        padding: 40px 35px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 380px;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      h2 {
+        text-align: center;
+        color: #8e44ad;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+        animation: slideDown 1s ease-in-out;
+      }
+
+      form label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+
+      form input {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 18px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+      }
+
+      form input:focus {
+        border-color: #8e44ad;
+        box-shadow: 0 0 8px rgba(142, 68, 173, 0.3);
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #8e44ad;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        animation: fadeInUp 1.2s ease-in-out;
+      }
+
+      button:hover {
+        background: #732d91;
+        transform: scale(1.05);
+      }
+
+      a {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        text-decoration: none;
+        color: #c0392b;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      a:hover {
+        color: #8e44ad;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Login Form</h2>
+
+      <form action="" method="POST">
+        {% csrf_token %}
+        <label for="Username">Username:</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="submit">Login</button>
+        {% if error %}
+        <p style="color: red; text-align: center">{{ error }}</p>
+        {% endif %}
+
+        <a href="{% url 'signup' %}">Don’t have an account? Sign up</a>
+      </form>
+    </div>
+  </body>
+</html>

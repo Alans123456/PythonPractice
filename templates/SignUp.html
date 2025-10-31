@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup Form</title>
+
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #c0392b, #8e44ad);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background: #fff;
+        padding: 40px 35px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 400px;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      h2 {
+        text-align: center;
+        color: #c0392b;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+        animation: slideDown 1s ease-in-out;
+      }
+
+      form label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+
+      form input {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 18px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+      }
+
+      form input:focus {
+        border-color: #c0392b;
+        box-shadow: 0 0 8px rgba(192, 57, 43, 0.3);
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #c0392b;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        animation: fadeInUp 1.2s ease-in-out;
+      }
+
+      button:hover {
+        background: #a93226;
+        transform: scale(1.05);
+      }
+
+      a {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        text-decoration: none;
+        color: #8e44ad;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      a:hover {
+        color: #c0392b;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Signup Form</h2>
+
+      <form action="" method="POST">
+        {% csrf_token %}
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+
+        <label for="confirm">Confirm Password:</label>
+        <input type="password" id="confirm" name="confirm" required />
+
+        <button type="submit">Sign Up</button>
+        {% if error %}
+        <p style="color: red; text-align: center">{{ error }}</p>
+        {% endif %}
+
+        <a href="{% url 'login' %}">Already have an account?</a>
+      </form>
+    </div>
+  </body>
+</html>
