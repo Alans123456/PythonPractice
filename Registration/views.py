@@ -41,8 +41,8 @@ def LoginPage(request):
             error_message = "Invalid username or password."
     return render(request, "Login.html", {"error": error_message})
 
-def LibraryPage(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    return render(request, "Library.html")
+# def LibraryPage(request):
+#     if not request.user.is_authenticated:
+#         return redirect('login')
+#     return render(request, "Library.html")
 
