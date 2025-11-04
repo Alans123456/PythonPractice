@@ -7,30 +7,38 @@
     <style>
       :root {
         --primary: #8b0000;
-        --bg: #ffffff;
+        --bg: #fafafa;
         --text: #111111;
-        --muted: #f7f7f7;
+        --muted: #f2f2f2;
         --dark: #1b1b1b;
+        --shadow: rgba(0, 0, 0, 0.1);
       }
 
       * {
         box-sizing: border-box;
-      }
-      body {
         margin: 0;
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-        background: var(--bg);
-        color: var(--text);
+        padding: 0;
       }
 
+      body {
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      /* Navbar */
       .navbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1rem;
-        padding: 0.5rem 1rem;
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.02), transparent);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 0.8rem 1.5rem;
+        background: #fff;
+        border-bottom: 1px solid #e4e4e4;
+        box-shadow: 0 2px 8px var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 999;
       }
 
       .brand {
@@ -38,151 +46,219 @@
         align-items: center;
         gap: 0.75rem;
         text-decoration: none;
-        color: inherit;
-      }
-      .brand img {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 6px;
-      }
-      .brand .title {
+        color: var(--text);
         font-weight: 600;
-        font-size: 1.1rem;
+      }
+
+      .brand img {
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+        object-fit: cover;
       }
 
       .nav-links {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.8rem;
       }
+
       .nav-links a {
         text-decoration: none;
-        padding: 0.5rem 0.7rem;
-        border-radius: 6px;
+        color: var(--text);
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        transition: background 0.3s ease, color 0.3s ease;
         font-weight: 500;
       }
+
       .nav-links a:hover {
-        background: var(--muted);
+        background-color: var(--muted);
       }
 
       .btn {
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.45rem 0.75rem;
+        justify-content: center;
+        padding: 0.45rem 0.9rem;
         border-radius: 8px;
-        border: 1px solid transparent;
-        cursor: pointer;
         font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
       }
+
       .btn-primary {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+      }
+
+      .btn-primary:hover {
+        background-color: #a30000;
+      }
+
+      .btn-outline {
+        border: 1.5px solid var(--primary);
+        color: var(--primary);
+        background: transparent;
+      }
+
+      .btn-outline:hover {
         background: var(--primary);
         color: white;
       }
-      .btn-primary:hover {
-        filter: brightness(0.95);
-      }
-      .btn-outline {
-        background: transparent;
-        border: 1px solid var(--primary);
-        color: var(--primary);
-      }
 
+      /* Mobile Menu */
       .menu-toggle {
         display: none;
-        background: transparent;
-        border: 0;
-        font-size: 1.25rem;
-        padding: 0.25rem;
+        font-size: 1.5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
       }
 
-      @media (max-width: 700px) {
-        .nav-links {
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 64px;
-          background: var(--bg);
-          flex-direction: column;
-          padding: 0.5rem;
-          border-top: 1px solid rgba(0, 0, 0, 0.05);
-          display: none;
-        }
-        .nav-links.show {
-          display: flex;
-        }
+      @media (max-width: 768px) {
         .menu-toggle {
           display: inline-flex;
         }
+
+        .nav-links {
+          position: absolute;
+          top: 70px;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: white;
+          padding: 1rem;
+          box-shadow: 0 4px 10px var(--shadow);
+          display: none;
+        }
+
+        .nav-links.show {
+          display: flex;
+        }
       }
 
-      a:focus,
-      button:focus {
-        outline: 3px solid rgba(139, 0, 0, 0.15);
-        outline-offset: 2px;
-      }
-
+      /* Hero Section */
       .hero {
-        padding: 3rem 1rem;
+        padding: 4rem 1rem;
         text-align: center;
-        background: var(--muted);
+        background: linear-gradient(180deg, #fff, var(--muted));
       }
+
       .hero h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
         color: var(--primary);
         margin-bottom: 0.5rem;
       }
+
       .hero p {
+        font-size: 1rem;
+        color: #444;
         max-width: 600px;
         margin: 0 auto;
-        font-size: 1rem;
-        color: #333;
       }
 
-      /* Floating div */
+      /* Cards */
+      .card-columns {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 2rem 1rem;
+        gap: 1.5rem;
+      }
+
+      .card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px var(--shadow);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+        width: 260px;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px var(--shadow);
+      }
+
+      .card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+
+      .card-body {
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 0.3rem;
+      }
+
+      .card-text {
+        color: #555;
+        font-size: 0.95rem;
+      }
+
+      .card-footer {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #eee;
+      }
+
+      .card-footer .btn {
+        margin: 0.25rem;
+      }
+
+      /* Floating Box */
       .floating-box {
         position: fixed;
         bottom: 20px;
         right: 20px;
         background: var(--dark);
-        color: white;
+        color: #fff;
         padding: 1rem 1.25rem;
         border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-        max-width: 250px;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+        max-width: 260px;
         text-align: center;
         z-index: 1000;
       }
+
       .floating-box h3 {
-        margin: 0 0 0.25rem;
-        font-size: 1.1rem;
         color: var(--primary);
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
       }
+
       .floating-box p {
-        margin: 0;
         font-size: 0.9rem;
         line-height: 1.4;
+      }
+
+      a:focus,
+      button:focus {
+        outline: 3px solid rgba(139, 0, 0, 0.2);
+        outline-offset: 3px;
       }
     </style>
   </head>
   <body>
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <nav class="navbar">
       <a href="#" class="brand">
         <img src="splash.png" alt="ISMT Library logo" />
-        <span class="title">ISMT Library</span>
+        <span>ISMT Library</span>
       </a>
 
-      <button
-        class="menu-toggle"
-        aria-controls="main-nav"
-        aria-expanded="false"
-        aria-label="Toggle menu"
-      >
-        ☰
-      </button>
+      <button class="menu-toggle" aria-label="Toggle menu">☰</button>
 
-      <div id="main-nav" class="nav-links">
+      <div class="nav-links" id="main-nav">
         <a href="/admin/">Admin Panel</a>
         <a href="/books/upload/">Upload Books</a>
         <a href="mailto:admin@example.com">Email</a>
@@ -193,28 +269,34 @@
 
     <section class="hero">
       <h1>Welcome to ISMT Library</h1>
-      <p>
-        Explore our digital and physical collections, upload your own books, and
-        manage resources easily through our online system.
-      </p>
+      <p>Your gateway to knowledge and digital resources.</p>
     </section>
+
+    <div class="card-columns">
+      <div class="card">
+        <img src="https://via.placeholder.com/300x180" alt="Book" />
+        <div class="card-body">
+          <h5 class="card-title">Book Title</h5>
+          <p class="card-text">Author Name</p>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary">Edit</a>
+            <a href="#" class="btn btn-outline">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="floating-box">
       <h3>Library Notice</h3>
-      <p>
-        New arrivals available this week! Don’t forget to check out the latest
-        books and journals.
-      </p>
+      <p>New arrivals available this week. Visit the digital shelf now!</p>
     </div>
 
     <script>
       const toggle = document.querySelector(".menu-toggle");
       const nav = document.getElementById("main-nav");
-      toggle &&
-        toggle.addEventListener("click", () => {
-          const shown = nav.classList.toggle("show");
-          toggle.setAttribute("aria-expanded", shown);
-        });
+      toggle.addEventListener("click", () => {
+        nav.classList.toggle("show");
+      });
     </script>
   </body>
 </html>
