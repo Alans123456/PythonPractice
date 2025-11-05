@@ -280,20 +280,20 @@
     </section>
 
     <div class="card-columns">
+      {% for book in book %}
       <div class="card">
-        <img
-          src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=60"
-          alt="Book"
-        />
+        <img src="{{ book.picture.url }}" alt="img" />
         <div class="card-content">
-          <h5 class="card-title">The Great Gatsby</h5>
-          <p class="card-text">by F. Scott Fitzgerald</p>
+          <h5 class="card-title">{{book.name}}</h5>
+          <p class="card-text">{{book.author}}</p>
+          <p class="card-text">{{book.description}}</p>
           <div class="card-buttons">
             <a href="#" class="btn btn-primary">Edit</a>
             <a href="#" class="btn btn-outline">Delete</a>
           </div>
         </div>
       </div>
+      {% endfor %}
     </div>
 
     <div class="floating-box">
