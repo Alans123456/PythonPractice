@@ -267,13 +267,13 @@
 
       <div class="nav-links" id="main-nav">
         <a href="/admin/">Admin Panel</a>
-        <a href="/books/upload/">Upload Books</a>
+        <a href="{% url 'uploadbook' %}">Upload Books</a>
         <a href="mailto:admin@example.com">Email</a>
         <a href="/accounts/logout/" class="btn btn-outline">Log out</a>
         <a href="/profile/" class="btn btn-primary">Profile</a>
       </div>
     </nav>
-
+    {% block content %}
     <section class="hero">
       <h1>Welcome to ISMT Library</h1>
       <p>Your gateway to knowledge and digital resources.</p>
@@ -295,6 +295,7 @@
       </div>
       {% endfor %}
     </div>
+    {% endblock %}
 
     <div class="floating-box">
       <h3>Library Notice</h3>

@@ -5,7 +5,7 @@ from library.settings import MEDIA_URL, MEDIA_ROOT, STATIC_URL,DEBUG, STATIC_ROO
 
 urlpatterns = [
     path('library', views.LibraryHome, name='library'),
-
+    path('uploadbook', views.uploadform, name='uploadbook'),
 ]
 
 if DEBUG:

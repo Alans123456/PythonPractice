@@ -1,0 +1,19 @@
+{% extends 'Library.html' %}
+{% block title %}Upload Book - ISMT Library{% endblock %}
+
+{% block content %}
+<center>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="w-100 table table-bordered table-striped" style="width:50%">
+                {% for field in upload %}
+                    <tr>
+                        <td>{{field.label}}</td>
+                        <td>{{field}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        <button type="submit" class="btn btn-primary">Upload Book</button>
+    </form>
+</center>
+{% endblock %}
