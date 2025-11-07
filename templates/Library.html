@@ -288,8 +288,8 @@
           <p class="card-text">{{book.author}}</p>
           <p class="card-text">{{book.description}}</p>
           <div class="card-buttons">
-            <a href="#" class="btn btn-primary">Edit</a>
-            <a href="#" class="btn btn-outline">Delete</a>
+            <a href="update/{{book.id}}" class="btn btn-primary" id={{book.id}}>Edit</a>
+            <a href="delete/{{book.id}}" class="btn btn-outline" id={{book.id}}>Delete</a>
           </div>
         </div>
       </div>

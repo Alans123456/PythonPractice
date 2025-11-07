@@ -6,6 +6,8 @@ from library.settings import MEDIA_URL, MEDIA_ROOT, STATIC_URL,DEBUG, STATIC_ROO
 urlpatterns = [
     path('library', views.LibraryHome, name='library'),
     path('uploadbook', views.uploadform, name='uploadbook'),
+    path('update/<int:book_id>/', views.update_book, name='update_book'),
+    path('delete/<int:book_id>/', views.delete_book, name='delete_book'),
 ]
 
 if DEBUG:
