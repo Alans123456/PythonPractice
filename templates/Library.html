@@ -4,6 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>ISMT Library</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <style>
       :root {
         --primary: #8b0000;
@@ -254,130 +260,6 @@
         font-size: 0.9rem;
         line-height: 1.4;
       }
-
-      /* Modal Styles */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 10000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        animation: fadeIn 0.3s ease-out;
-      }
-
-      .modal.show {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .modal-content {
-        background-color: #fff;
-        border-radius: 14px;
-        box-shadow: 0 10px 30px var(--shadow);
-        width: 90%;
-        max-width: 500px;
-        max-height: 90vh;
-        overflow-y: auto;
-        animation: slideIn 0.3s ease-out;
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-
-      @keyframes slideIn {
-        from { transform: translateY(-50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-      }
-
-      .modal-header {
-        padding: 1.5rem;
-        border-bottom: 1px solid var(--muted);
-        background: var(--primary);
-        color: white;
-        border-radius: 14px 14px 0 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .modal-title {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin: 0;
-      }
-
-      .modal-header .close {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        color: white;
-        cursor: pointer;
-        padding: 0;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: background 0.3s ease;
-      }
-
-      .modal-header .close:hover {
-        background: rgba(255, 255, 255, 0.2);
-      }
-
-      .modal-body {
-        padding: 1.5rem;
-      }
-
-      .form-group {
-        margin-bottom: 1.2rem;
-      }
-
-      .form-group label {
-        display: block;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 0.5rem;
-      }
-
-      .form-control {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .form-control:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
-      }
-
-      textarea.form-control {
-        resize: vertical;
-        min-height: 100px;
-      }
-
-      .modal-footer {
-        padding: 1rem 1.5rem;
-        border-top: 1px solid var(--muted);
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.75rem;
-      }
-
-      .modal-footer .btn {
-        min-width: 80px;
-      }
     </style>
   </head>
   <body>
@@ -391,71 +273,28 @@
 
       <div class="nav-links" id="main-nav">
 
-        <li><a href="/admin/">Admin Panel</a></li>
-        <li><a href="{% url 'uploadbook' %}">Upload Books</a></li>
-        <li><a href="#" data-toggle="modal" data-target="#emailModal" class="nav-link">Email</a></li>
-         <!-- Email Modal -->
-      <div class="modal" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="emailModalLabel">Send Email</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+        <a href="/admin/">Admin Panel</a>
+        <a href="{% url 'uploadbook' %}">Upload Books</a>
+        <a href="#" data-toggle="modal" data-target="#emailModal" class="nav-link">Email</a>
+        <a href="/accounts/logout/" class="btn btn-outline">Log out</a>
+        <a href="/profile/" class="btn btn-primary">Profile</a>
+      </div>
+    </nav>
+
+    {% if messages %}
+      <div class="container mt-3">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form method="POST" action="">
-            {% csrf_token %}
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="toEmail">To</label>
-                <input type="email" class="form-control" id="toEmail" name="to_email" placeholder="Enter recipient email" required>
-              </div>
-              <div class="form-group">
-                <label for="subject">Subject</label>
-                <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter subject" required>
-              </div>
-              <div class="form-group">
-                <label for="body">Body</label>
-                <textarea class="form-control" id="body" name="body" rows="4" placeholder="Enter your message here..." required></textarea>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Send</button>
-            </div>
-          </form>
-        </div>
+        {% endfor %}
       </div>
-        {% comment %} <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Contact Library Support</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form method="post" action="{% url 'send_email' %}">
-                  {% csrf_token %}
-                  <div class="form-group">
-                    <label for="email">Your Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" required />
-                  </div>
-                  <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea class="form-control" id="message" name="message" rows="3"></textarea>
-                  <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div> {% endcomment %}
-        <li><a href="/accounts/logout/" class="btn btn-outline">Log out</a></li>
-        <li><a href="/profile/" class="btn btn-primary">Profile</a></li>
-      </div>
-    </nav>
-    
+    {% endif %}
+
     {% block content %}
     <section class="hero">
       <h1>Welcome to ISMT Library</h1>
@@ -485,45 +324,46 @@
       <p>New arrivals available this week. Visit the digital shelf now!</p>
     </div>
 
+    <!-- Email Modal -->
+    <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-dark text-white">
+            <h5 class="modal-title" id="emailModalLabel">Send Email</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form method="POST" action="{% url 'send_email' %}">
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="toEmail">To</label>
+                <input type="email" class="form-control" id="toEmail" name="to_email" placeholder="Enter recipient email" required>
+              </div>
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter subject" required>
+              </div>
+              <div class="form-group">
+                <label for="body">Body</label>
+                <textarea class="form-control" id="body" name="body" rows="4" placeholder="Enter your message here..." required></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script>
       const toggle = document.querySelector(".menu-toggle");
       const nav = document.getElementById("main-nav");
       toggle.addEventListener("click", () => {
         nav.classList.toggle("show");
-      });
-
-      // Modal functionality
-      const emailLink = document.querySelector('[data-target="#emailModal"]');
-      const modal = document.getElementById('emailModal');
-      const closeButtons = modal.querySelectorAll('[data-dismiss="modal"]');
-
-      emailLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        modal.classList.add('show');
-        modal.setAttribute('aria-hidden', 'false');
-      });
-
-      closeButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          modal.classList.remove('show');
-          modal.setAttribute('aria-hidden', 'true');
-        });
-      });
-
-      // Close modal on outside click
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.remove('show');
-          modal.setAttribute('aria-hidden', 'true');
-        }
-      });
-
-      // Close modal on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('show')) {
-          modal.classList.remove('show');
-          modal.setAttribute('aria-hidden', 'true');
-        }
       });
     </script>
   </body>

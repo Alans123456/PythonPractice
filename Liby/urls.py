@@ -8,6 +8,7 @@ urlpatterns = [
     path('uploadbook', views.uploadform, name='uploadbook'),
     path('update/<int:book_id>/', views.update_book, name='update_book'),
     path('delete/<int:book_id>/', views.delete_book, name='delete_book'),
+    path('email', views.send_template_email, name='send_email'),
 ]
 
 if DEBUG:

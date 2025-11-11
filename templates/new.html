@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}New Book - ISMT Library{% endblock %}
+
+{% block content %}
+<center>
+    {% if message %}
+        <h3>{{message}}</h3>
+    {% else %}
+    <h3>No any message found</h3>
+    {% endif %}
+</center>
+
+{% endblock %}
