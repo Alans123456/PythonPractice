@@ -21,7 +21,10 @@ class Author(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=200)
     isbn = models.CharField(max_length=13,unique=True)
-    publication_date = models.DateField() 
+    publication_date = models.DateField()
+    publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE, null=True)
+    authors = models.ManyToManyField(Author)
+    image = models.ImageField(upload_to='book_images/', blank=True, null=True)
 
     def __str__(self):
         return self.title
