@@ -14,3 +14,104 @@
     <a href="/profile/" class="btn btn-primary" style="display:inline-flex;align-items:center;justify-content:center;padding:0.45rem 0.9rem;border-radius:8px;font-weight:600;text-decoration:none;background-color:#8b0000;color:white;border:none;cursor:pointer;transition:all 0.3s;">Profile</a>
   </div>
 </nav>
+{% block content %}
+  <div class="container mt-5">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1 style="color:#333;font-weight:700;margin-bottom:1rem;">Book List</h1>
+        <p style="color:#666;font-size:1.1rem;">Total Books: <strong>{{ total_books }}</strong></p>
+        
+        <!-- Search Bar -->
+        <form method="get" class="mb-4">
+          <div class="input-group" style="max-width:400px;">
+            <input type="text" name="q" class="form-control" placeholder="Search by title, ISBN, author, or publisher" value="{{ query }}" style="padding:0.6rem;border:1px solid #ddd;border-radius:8px 0 0 8px;">
+            <button class="btn" type="submit" style="background-color:#8b0000;color:white;border:none;padding:0.6rem 1rem;border-radius:0 8px 8px 0;cursor:pointer;">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Books Display -->
+    {% if books %}
+      <div class="row">
+        {% for book in books %}
+          <div class="col-md-4 mb-5">
+            <div class="card" style="border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:transform 0.3s,box-shadow 0.3s;height:100%;">
+              <!-- Book Image -->
+              <div style="height:280px;background:#f5f5f5;overflow:hidden;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #e0e0e0;">
+                {% if book.image %}
+                  <img src="{{ book.image.url }}" alt="{{ book.title }}" style="width:100%;height:100%;object-fit:cover;">
+                {% else %}
+                  <div style="text-align:center;color:#999;font-size:3rem;">📚</div>
+                {% endif %}
+              </div>
+              
+              <!-- Book Details -->
+              <div class="card-body" style="padding:1.5rem;">
+                <h5 class="card-title" style="font-weight:700;color:#111;margin-bottom:0.5rem;line-height:1.4;">{{ book.title }}</h5>
+                
+                <!-- Authors -->
+                <p style="color:#666;font-size:0.95rem;margin-bottom:0.8rem;">
+                  <strong>Authors:</strong>
+                  {% if book.authors.all %}
+                    {% for author in book.authors.all %}
+                      {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    <span style="color:#999;">N/A</span>
+                  {% endif %}
+                </p>
+                
+                <!-- Publisher -->
+                <p style="color:#666;font-size:0.95rem;margin-bottom:0.8rem;">
+                  <strong>Publisher:</strong> 
+                  {% if book.publisher %}
+                    {{ book.publisher.name }}
+                  {% else %}
+                    <span style="color:#999;">N/A</span>
+                  {% endif %}
+                </p>
+                
+                <!-- ISBN -->
+                <p style="color:#666;font-size:0.95rem;margin-bottom:0.8rem;">
+                  <strong>ISBN:</strong> {{ book.isbn }}
+                </p>
+                
+                <!-- Publication Date -->
+                <p style="color:#666;font-size:0.95rem;margin-bottom:1rem;">
+                  <strong>Published:</strong> {{ book.publication_date|date:"M d, Y" }}
+                </p>
+                
+                <!-- Action Button -->
+                <a href="#" class="btn btn-primary" style="display:inline-block;background-color:#8b0000;color:white;padding:0.6rem 1rem;border-radius:8px;text-decoration:none;font-weight:600;transition:background-color 0.3s;width:100%;text-align:center;">View Details</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+      <!-- Pagination -->
+      {% if books.has_other_pages %}
+        <nav aria-label="Page navigation" style="margin-top:2rem;">
+          <ul class="pagination" style="display:flex;justify-content:center;list-style:none;gap:0.5rem;">
+            {% if books.has_previous %}
+              <li><a href="?page=1&q={{ query }}" style="padding:0.5rem 0.8rem;border:1px solid #8b0000;color:#8b0000;text-decoration:none;border-radius:6px;">First</a></li>
+              <li><a href="?page={{ books.previous_page_number }}&q={{ query }}" style="padding:0.5rem 0.8rem;border:1px solid #8b0000;color:#8b0000;text-decoration:none;border-radius:6px;">Previous</a></li>
+            {% endif %}
+            
+            <li style="padding:0.5rem 0.8rem;color:#666;">Page {{ books.number }} of {{ books.paginator.num_pages }}</li>
+            
+            {% if books.has_next %}
+              <li><a href="?page={{ books.next_page_number }}&q={{ query }}" style="padding:0.5rem 0.8rem;border:1px solid #8b0000;color:#8b0000;text-decoration:none;border-radius:6px;">Next</a></li>
+              <li><a href="?page={{ books.paginator.num_pages }}&q={{ query }}" style="padding:0.5rem 0.8rem;border:1px solid #8b0000;color:#8b0000;text-decoration:none;border-radius:6px;">Last</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+    {% else %}
+      <div class="alert alert-info" style="background-color:#e8f4f8;border:1px solid #b3e5fc;color:#01579b;padding:1rem;border-radius:8px;text-align:center;">
+        <p style="margin:0;">No books found. {% if query %}Try a different search.{% else %}Add your first book!{% endif %}</p>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
