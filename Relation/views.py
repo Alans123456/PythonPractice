@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from .models import Book, Author, Publisher
@@ -36,3 +36,7 @@ def RelationHome(request):
         'total_books': paginator.count,
     }
     return render(request, 'Relation/booklist.html', context)
+
+def RelationDetail(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    return render(request, 'Relation/bookdetails.html', {'book': book})
