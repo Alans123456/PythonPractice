@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from .models import Book, Author, Publisher
+from .forms import PublisherForm
 
 # Create your views here.
 def RelationHome(request):
@@ -40,3 +41,14 @@ def RelationHome(request):
 def RelationDetail(request, pk):
     book = get_object_or_404(Book, pk=pk)
     return render(request, 'Relation/bookdetails.html', {'book': book})
+
+def addpublisher(request):
+    if request.method == 'POST':
+       form = PublisherForm(request.POST)
+       if form.is_valid():
+              form.save()
+              return redirect('relation')
+    else:
+        form = PublisherForm()
+    return render(request, 'Relation/addPublisher.html', {'form': form})
+
