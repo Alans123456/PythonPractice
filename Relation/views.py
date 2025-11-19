@@ -1,8 +1,15 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from .models import Book, Author, Publisher
 from .forms import PublisherForm
+
+KHALTI_VERIFY_URL = "https://khalti.com/api/v2/epayment/"
+KHALTI_SECRET_KEY = "django-insecure-po%m(^w__!8kw$hpolk7glgbk-u16hd*1-(bfc1b8!kk7#icer"
+import requests
 
 # Create your views here.
 def RelationHome(request):
@@ -42,6 +49,12 @@ def RelationDetail(request, pk):
     book = get_object_or_404(Book, pk=pk)
     return render(request, 'Relation/bookdetails.html', {'book': book})
 
+def book_detail(request, pk):
+    """Show detailed view for a single book."""
+    qs = Book.objects.select_related('publisher').prefetch_related('authors')
+    book = get_object_or_404(qs, pk=pk)
+    return render(request, 'Relation/book_detail.html', {'book': book})
+
 def addpublisher(request):
     if request.method == 'POST':
        form = PublisherForm(request.POST)
@@ -52,3 +65,28 @@ def addpublisher(request):
         form = PublisherForm()
     return render(request, 'Relation/addPublisher.html', {'form': form})
 
+@csrf_exempt
+def verify_khalti_payment(request):
+    if request.method == "POST":
+        try:
+            payload =json.loads(request.body)
+
+            response = requests.post(
+                KHALTI_VERIFY_URL,
+                json={
+                    'token': payload.get("token"),
+                    'amount':payload.get("amount")
+                },
+                headers={
+                    'Authorization':f'Bearer{KHALTI_SECRET_KEY}',
+                    'Content-Type':'application/json'
+                }
+            )
+            verification_data = response.json()
+            if response.status_code == 200 and verification_data.get('status') == 'success':
+                return JsonResponse({"success":True})
+            else:
+                return JsonResponse({"success":False},status=400)
+        except Exception as e:
+            return JsonResponse({"success":False,"error":str(e)},status=400)
+    return JsonResponse({"success":False},status=400)

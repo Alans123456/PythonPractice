@@ -1,8 +1,11 @@
-from django.urls import path,include
+from django.urls import path
 from . import views
 
+app_name = 'relation'
+
 urlpatterns = [
-    path('relation/', views.RelationHome, name='relation'),
-     path('relation/<int:pk>',views.RelationDetail,name="book_detail"),
+    path('relation/', views.RelationHome, name='home'),
+    path('relation/<int:pk>/', views.book_detail, name='book_detail'),
     path('relation/addpublisher/', views.addpublisher, name='addPublisher'),
+    path('verify-khalti-payment/', views.verify_khalti_payment, name='verify_payment'),
 ]

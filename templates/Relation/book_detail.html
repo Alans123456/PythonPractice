@@ -1,0 +1,273 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ book.title }} - ISMT Library</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Full page smooth fade */
+    body {
+      animation: fadeAll 0.8s ease-in-out;
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+    @keyframes fadeAll {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Hero fade + parallax */
+    .hero-section {
+      width: 100%;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0d6efd33, #ffffff22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 120%;
+      background: {% if book.image %}url('{{ book.image.url }}'){% else %}linear-gradient(135deg, #667eea 0%, #764ba2 100%){% endif %} center/cover no-repeat;
+      filter: blur(10px) brightness(70%);
+      animation: heroZoom 14s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+
+    /* Book image */
+    .book-image {
+      width: 320px;
+      height: 450px;
+      object-fit: cover;
+      border-radius: 20px;
+      z-index: 2;
+      transition: transform 0.6s ease;
+      animation: popIn 0.8s ease forwards;
+    }
+
+    .book-image:hover {
+      transform: scale(1.07);
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Glass card */
+    .glass-card {
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.50);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 25px;
+      margin-top: -60px;
+      animation: slideUp 0.9s ease forwards;
+    }
+
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(60px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Animated section cards */
+    .info-card {
+      border-radius: 18px;
+      border: none;
+      padding: 18px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeCard 0.8s ease forwards;
+    }
+
+    @keyframes fadeCard {
+      0% { opacity: 0; transform: translateY(25px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .info-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .hero-section h1 {
+      z-index: 2;
+      font-size: 40px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .navbar-top {
+      background: #fff;
+      border-bottom: 1px solid #e4e4e4;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-top navbar-expand-lg">
+  <div class="container-fluid px-4">
+    <a href="{% url 'relation:home' %}" class="navbar-brand">
+      <img src="{% static 'splash.png' %}" alt="ISMT Library logo" style="width:45px;height:45px;border-radius:8px;object-fit:cover;margin-right:10px;">
+      <span style="font-weight:600;color:#111;">ISMT Library</span>
+    </a>
+    <a href="{% url 'relation:home' %}" style="text-decoration:none;color:#8b0000;font-weight:600;margin-left:auto;">← Back to List</a>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<div class="hero-section d-flex flex-column text-center">
+  {% if book.image %}
+    <img src="{{ book.image.url }}" alt="{{ book.title }}" class="book-image shadow-xl">
+  {% else %}
+    <div class="book-image shadow-xl" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);color:#fff;font-size:6rem;">📚</div>
+  {% endif %}
+  <h1 class="text-white fw-bold mt-4">{{ book.title }}</h1>
+</div>
+
+<!-- INFO CONTENT -->
+<div class="container">
+
+  <!-- GLASS MAIN CARD -->
+  <div class="glass-card shadow-lg">
+
+    <!-- BOOK INFO -->
+    <div class="info-card bg-light mb-4">
+      <div class="section-title">📘 Book Information</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Title:</strong> {{ book.title }}</li>
+        <li class="list-group-item">
+          <strong>Author(s):</strong>
+          {% for author in book.authors.all %}
+            {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+            <span class="text-muted">N/A</span>
+          {% endfor %}
+        </li>
+        <li class="list-group-item"><strong>ISBN:</strong> {{ book.isbn }}</li>
+        <li class="list-group-item"><strong>Publisher:</strong> {{ book.publisher.name|default:"N/A" }}</li>
+        <li class="list-group-item"><strong>Publication Date:</strong> {{ book.publication_date|date:"F d, Y" }}</li>
+      </ul>
+    </div>
+
+    <!-- PUBLISHER INFO -->
+    {% if book.publisher %}
+    <div class="info-card bg-white mb-4 shadow-sm">
+      <div class="section-title">🏢 Publisher Details</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Name:</strong> {{ book.publisher.name }}</li>
+        <li class="list-group-item"><strong>Address:</strong> {{ book.publisher.address }}</li>
+        <li class="list-group-item"><strong>City:</strong> {{ book.publisher.city }}</li>
+        <li class="list-group-item"><strong>Country:</strong> {{ book.publisher.country }}</li>
+      </ul>
+    </div>
+    {% endif %}
+
+    <!-- AUTHOR INFO -->
+    <div class="info-card bg-light shadow-sm mb-4">
+      <div class="section-title">✍️ Author Details</div>
+      <ul class="list-group list-group-flush">
+        {% for author in book.authors.all %}
+          <li class="list-group-item">
+            <strong>Name:</strong> {{ author.first_name }} {{ author.last_name }} <br>
+            <strong>Email:</strong> {{ author.email }}
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">No authors available.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="text-center mb-5 mt-4">
+    <button id="payment-button" class="btn btn-success btn-lg" type="button">Proceed to Payment</button>
+  </div>
+  <div class="text-center mb-5">
+    <a href="{% url 'relation:home' %}" class="btn btn-secondary">Back to Book List</a>
+  </div>
+
+</div>
+
+<!-- Include Khalti SDK -->
+<script src="https://khalti.com/static/khalti-checkout.js"></script>
+<script>
+  // Configuration for Khalti Payment
+  var config = {
+    publicKey: "test_public_key_dc74e0fd57cb46cd93832c15849d3758", // Replace with your actual public key
+    productIdentity: "{{ book.id }}",
+    productName: "{{ book.title }}",
+    productUrl: "{{ request.build_absolute_uri }}",
+    paymentPreference: ["KHALTI", "EBANKING", "MOBILE_BANKING"],
+    eventHandler: {
+      onSuccess: function(payload) {
+        // Payment successful - send verification to backend
+        fetch("/verify-khalti-payment/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
+          body: JSON.stringify({
+            token: payload.token,
+            amount: payload.amount,
+            book_id: "{{ book.id }}"
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert("✅ Payment Successful! Book borrowed successfully.");
+            window.location.href = "{% url 'relation:home' %}";
+          } else {
+            alert("❌ Payment verification failed: " + (data.message || "Unknown error"));
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("❌ Error verifying payment: " + error.message);
+        });
+      },
+      onError: function(error) {
+        alert("❌ Payment error: " + error);
+      },
+      onClose: function() {
+        console.log("Payment widget closed");
+      }
+    }
+  };
+
+  // Initialize Khalti checkout
+  var checkout = new KhaltiCheckout(config);
+
+  // Attach click handler to payment button
+  document.getElementById("payment-button").addEventListener("click", function(e) {
+    e.preventDefault();
+    checkout.show({ amount: 10000 }); // Amount in paisa (100 NPR = 10000 paisa)
+  });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

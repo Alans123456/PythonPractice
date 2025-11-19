@@ -169,7 +169,55 @@
         </div>
 
     </div>
+    <div class="text-center mb-5">
+        <button id='payment-button' class="btn btn-success btn-lg" type="submit">Proceed to Payment</button>
+    </div>
+    <a href="{% url 'relation' %}" class="btn btn-secondary mb-5">Back to Booklist</a>
 
 </div>
+
+
+    
+    
+<!--  Include Khalti SDK    -->
+  <script src="https://khalti.com/static/khalti-checkout.js"></script>
+  <script>
+    var config = {
+        publicKey: "your_public_key",
+        productIdentity:"unique_product_id",
+        productName:"Your Product Name",
+        productUrl:"https://your-website.com/product-url",
+        paymentPreference:["KHALTI","EBANKING","MOBILE_BANKING"],
+        eventHandler:{
+            onsuccess:function(payload) {
+                fetch("/verify-khalti-payment", {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json",
+                        "X-CSRFToken":"{{ csrf_token }}"
+                    },
+                    body: JSON.stringify(payload)
+                }).then(response=> response.json())
+                .then(data=> {
+                    if (data.success) {
+                        alert("Payment Successful!");
+                    } else {
+                        alert("Payment Failed!");
+                    }
+                });
+            },
+            onError: function (error) {
+                alert("Payment error: " + error);
+            },
+            onClose: function () {
+                console.log("Widget is closed");
+            }
+        }
+    };
+    var checkout = new KhaltiCheckout(config);
+    document.getElementById("payment-button").onclick=function () {
+        checkout.show({ amount: 10000 });
+    }
+  </script>
 
 {% endblock content %}
