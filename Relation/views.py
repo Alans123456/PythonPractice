@@ -14,7 +14,8 @@ import requests
 # Create your views here.
 def RelationHome(request):
     """Display paginated book list with all book data."""
-    books_list = Book.objects.all().select_related('publisher').prefetch_related('authors')
+    # Order by primary key to ensure stable pagination (created_at not present on model)
+    books_list = Book.objects.all().select_related('publisher').prefetch_related('authors').order_by('-id')
     
     # Search functionality
     query = request.GET.get('q', '')
@@ -57,10 +58,10 @@ def book_detail(request, pk):
 
 def addpublisher(request):
     if request.method == 'POST':
-       form = PublisherForm(request.POST)
-       if form.is_valid():
-              form.save()
-              return redirect('relation')
+        form = PublisherForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('relation:home')
     else:
         form = PublisherForm()
     return render(request, 'Relation/addPublisher.html', {'form': form})
